@@ -1,0 +1,28 @@
+﻿/*Para evitar que o conteúdo da página fique parcialmente escondido
+    pela navbar
+*/
+body {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+/*Para formatar a div de login*/
+.divLogin {
+    padding: 15px;
+}
+/*Para formatar o rodapé do aviso dos cookies*/
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: gray;
+    color: white;
+    text-align: center;
+}
+/*Para o gráfico do dashboard*/
+.ct-label {
+    color: white;
+    fill: white;
+    font-size: 0.75rem;
+    line-height: 1;
+}

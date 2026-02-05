@@ -1,0 +1,109 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="M17AB_TrabalhoModelo_2022_23.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <link href="/Public/css/bootstrap.css" rel="stylesheet" />
+    <script src="/Public/js/bootstrap.bundle.js"></script>
+    <link href="/Public/css/css.css" rel="stylesheet" />
+    <script src="/Public/js/codigo.js"></script>
+    <title>PSI-Home</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="container">
+            <!--Menu-->
+            <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" style="z-index: 2">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/index.aspx">PSI</a>
+                    <!--menu hamburguer-->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!--menu hamburguer-->
+                    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <!--Menu do admin-->
+                            <% if (Session["perfil"] != null && Session["perfil"].Equals("0"))
+                                {%>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Admin.aspx">Área Admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Livros/livros.aspx">Livros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Utilizadores/utilizadores.aspx">Utilizadores</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Emprestimos/emprestimos.aspx">Empréstimos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Consultas/consultas.aspx">Consultas</a>
+                            </li>
+                            <%}%>
+                            <!--Menu do utilizador-->
+                            <% if (Session["perfil"] != null && Session["perfil"].Equals("1"))
+                                {%>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/User/User.aspx">Área Cliente</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/User/Emprestimos/Emprestimos.aspx">Reservar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/User/Emprestimos/Historico.aspx">Histórico</a>
+                            </li>
+                            <%}%>
+
+                            <!--Menu da homepage-->
+                            <% if (Request.Url.LocalPath.ToLower().EndsWith("index.aspx"))
+                                {%>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Ordenação</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="index.aspx?ordena=1">Por Preço</a></li>
+                                    <li><a class="dropdown-item" href="index.aspx?ordena=2">Por Autor</a></li>
+                                </ul>
+                            </li>
+                            <%}%>
+                        </ul>
+                        <!--Menu login/logout-->
+                        <ul class="navbar-nav">
+                            <% if (Session["perfil"] == null)
+                                {%>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/registo.aspx">Registar</a>
+                            </li>
+                            <%}
+                            else
+                            {%>
+                            <li class="nav-item">
+                                 <a class="nav-link" href="/logout.aspx">Terminar Sessão</a>
+                            </li>
+                            <%}%>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!--Menu-->
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+            <!--Aviso dos cookies-->
+            <div runat="server" id="div_aviso">
+                <footer class="footer">
+                    <div class="container">
+                        Este site utiliza cookies.
+                    <asp:Button runat="server" ID="bt1" OnClick="bt1_Click"
+                        CssClass="btn btn-outline-primary float-right"
+                        Text="Aceitar" />
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
