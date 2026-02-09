@@ -2,13 +2,21 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="/Public/chartistJS/chartist.css" rel="stylesheet" />
     <script src="/Public/chartistJS/chartist.js"></script>
+    <style>
+        .metade{
+            width: 50%;
+            float: left;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h1>Área de administrador</h1>
+    <div>
     <button id="btnlista" class="btn btn-info">Carregar dados</button>
     <button id="btnCriaGrafico" class="btn btn-success">Dados de utilizadores</button>
-    <div id="divLista"></div>
-    <div class="ct-chart ct-golden-section"></div>
+    </div>
+    <div class="metade" id="divLista"></div>
+    <div  class="metade ct-chart ct-golden-section"></div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const btnLista = document.getElementById('btnlista');
@@ -31,13 +39,13 @@
                         console.log(data.d);
                         const listaLivros = JSON.parse(data.d);
                         const divLista = document.getElementById('divLista');
-                    divLista.innerHTML = "";
-                        listaLivros.forEach(livro => {
-                            const br = document.createElement('br');
-                            divLista.appendChild(document.createTextNode(livro.nome));
-                            divLista.appendChild(br);
-                        });
-                    })
+                        divLista.innerHTML = "";
+                            listaLivros.forEach(livro => {
+                                const br = document.createElement('br');
+                                divLista.appendChild(document.createTextNode(livro.nome));
+                                divLista.appendChild(br);
+                            });
+                        })
                 .catch(error => {
                         console.error('Erro:', error);
                         alert('Alguma coisa errada correu mal');
