@@ -19,20 +19,27 @@ namespace M17AB_TrabalhoModelo_202223.Models
 
         public void adicionarEmprestimo(int nlivro, int nleitor, DateTime dataDevolve)
         {
-            string sql = "SELECT * FROM livros WHERE nlivro=@nlivro";
+            //Código melhorado 2026
+            string sql = "SELECT estado FROM livros WHERE nlivro=@nlivro";
             List<SqlParameter> parametrosBloquear = new List<SqlParameter>()
             {
                 new SqlParameter() {ParameterName="@nlivro",SqlDbType=SqlDbType.Int,Value=nlivro }
             };
-            //iniciar transação
-            SqlTransaction transacao = bd.iniciarTransacao(IsolationLevel.Serializable);
-            DataTable dados = bd.devolveSQL(sql, parametrosBloquear, transacao);
+            //iniciar transação [2026 - só bloqueia o registo, permite inserts ao contrário do Serializable]
+            SqlTransaction transacao = bd.iniciarTransacao(IsolationLevel.RepeatableRead);
 
             try
             {
+                DataTable dados = bd.devolveSQL(sql, parametrosBloquear, transacao);
+                //verificar se o livro existe [2026]
+                if (dados.Rows.Count == 0)
+                    throw new Exception("Livro não encontrado");
+
                 //verificar disponibilidade do livro
                 if (dados.Rows[0]["estado"].ToString() != "1")
                     throw new Exception("Livro não está disponível");
+                //[2026]
+                dados.Dispose();
                 //alterar estado do livro
                 sql = "UPDATE Livros SET estado=@estado WHERE nlivro=@nlivro";
                 List<SqlParameter> parametrosUpdate = new List<SqlParameter>()
@@ -59,8 +66,13 @@ namespace M17AB_TrabalhoModelo_202223.Models
             catch
             {
                 transacao.Rollback();
+                throw;  //Envia a exceção para a função que chamou [2026]
             }
-            dados.Dispose();
+            finally
+            {
+                transacao.Dispose();    //[2026]
+            }
+            //dados.Dispose(); [2026]
         }
         public void adicionarReserva(int nlivro, int nleitor, DateTime dataDevolve)
         {
