@@ -5,6 +5,8 @@
     <h2>Gestão de Livros</h2>
     <asp:GridView ID="gvLivros" runat="server" CssClass="table" />
     <h2>Adicionar Livro</h2>
+    <input type="hidden" runat="server" id="AntiForgeryToken" />
+
     <div class="from-group">
         <label for="ContentPlaceHolder1_tbNome">Nome:</label>
         <asp:TextBox CssClass="form-control" ID="tbNome" runat="server" MaxLength="100" Required placeholder="Nome do livro" /><br />

@@ -25,6 +25,30 @@ namespace M17AB_TrabalhoModelo_2022_23.Admin.Livros
             if (!IsPostBack)
             {
                 AtualizarGrid();
+                //CSRF
+                //gerar o token
+                string antiforgerytoken = Helper.GenerateAntiForgeryToken();
+                //guardar nas variáveis de sessão
+                Session["AntiForgeryToken"] = antiforgerytoken;
+                //inserir na página
+                AntiForgeryToken.Value = antiforgerytoken;
+            }
+            else
+            {
+                string token = AntiForgeryToken.Value;
+                if (Helper.ValidateAntiForgeryToken(Session, token) == false)
+                {
+                    // Token inválido
+                    Response.StatusCode = 403; // Forbidden
+                    Response.Write("Invalid request: Anti-forgery token validation failed.");
+                    Response.End();
+                    return;
+                }
+                else
+                {
+                    //Atualiza o token
+                    AntiForgeryToken.Value = Session["AntiForgeryToken"].ToString();
+                }
             }
         }
         /// <summary>

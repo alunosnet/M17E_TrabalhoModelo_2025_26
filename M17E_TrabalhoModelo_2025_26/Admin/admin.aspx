@@ -11,6 +11,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h1>Área de administrador</h1>
+    <input type="hidden" runat="server" id="AntiForgeryToken" />
     <div>
     <button id="btnlista" class="btn btn-info">Carregar dados</button>
     <button id="btnCriaGrafico" class="btn btn-success">Dados de utilizadores</button>

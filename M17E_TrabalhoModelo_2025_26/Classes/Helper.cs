@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Cryptography;
 using System.Web;
+using System.Web.SessionState;
 
 
 public class Helper
@@ -39,5 +42,34 @@ public class Helper
         }
         //enviar
         smtp.Send(mensagem);
+    }
+
+    // Devolve uma string random
+    public static string GenerateAntiForgeryToken()
+    {
+        using (var rng = new RNGCryptoServiceProvider())
+        {
+            byte[] randomBytes = new byte[32]; // 256-bit token
+            rng.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
+        }
+    }
+    public static bool ValidateAntiForgeryToken(HttpSessionState session,string requestToken)
+    {
+        // Retrieve token from session and request
+        string sessionToken = session["AntiForgeryToken"] as string;
+
+        // Validar
+        if (string.IsNullOrEmpty(sessionToken) ||
+            string.IsNullOrEmpty(requestToken) ||
+            !sessionToken.Equals(requestToken, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        // Gerar um novo
+        string newToken = GenerateAntiForgeryToken();
+        session["AntiForgeryToken"] = newToken;
+        return true;
     }
 }

@@ -24,6 +24,15 @@ namespace M17AB_TrabalhoModelo_2022_23.Admin.Livros
         protected global::System.Web.UI.WebControls.GridView gvLivros;
 
         /// <summary>
+        /// AntiForgeryToken control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden AntiForgeryToken;
+
+        /// <summary>
         /// tbNome control.
         /// </summary>
         /// <remarks>
