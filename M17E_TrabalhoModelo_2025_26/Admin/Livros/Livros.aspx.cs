@@ -128,6 +128,11 @@ namespace M17AB_TrabalhoModelo_2022_23.Admin.Livros
                 lbErro.Text = "Ocorreu o seguinte erro: " + ex.Message;
                 return;
             }
+            finally
+            {
+                //atualizar grid
+                AtualizarGrid();
+            }
             //limpar form
             tbAno.Text = "";
             tbNome.Text = "";
@@ -135,8 +140,7 @@ namespace M17AB_TrabalhoModelo_2022_23.Admin.Livros
             tbAutor.Text = "";
             dpTipo.SelectedIndex = 0;
             tbData.Text = DateTime.Now.ToShortDateString();
-            //atualizar grid
-            AtualizarGrid();
+
         }
         /// <summary>
         /// Atualiza a grid dos livros
