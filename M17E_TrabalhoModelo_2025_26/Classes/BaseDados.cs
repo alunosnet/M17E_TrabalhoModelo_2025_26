@@ -8,7 +8,7 @@ using System.Web;
 
 namespace M17AB_TrabalhoModelo_202223.Classes
 {
-    public class BaseDados
+    public class BaseDados: IDisposable
     {
         private string strLigacao;
         private SqlConnection ligacaoBD;
@@ -19,18 +19,31 @@ namespace M17AB_TrabalhoModelo_202223.Classes
             ligacaoBD = new SqlConnection(strLigacao);
             ligacaoBD.Open();
         }
-        ~BaseDados()
+        void FecharLigacao()
         {
             try
             {
+                if (ligacaoBD == null) return;
                 ligacaoBD.Close();
+                ligacaoBD.Dispose();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+            finally
+            {
+                ligacaoBD = null;
+            }
         }
-
+        ~BaseDados()
+        {
+            FecharLigacao();
+        }
+        public void Dispose()
+        {
+            FecharLigacao();
+        }
         #region Transações
         public SqlTransaction iniciarTransacao()
         {
@@ -138,6 +151,8 @@ namespace M17AB_TrabalhoModelo_202223.Classes
             comando = null;
             return registos;
         }
+
+
         #endregion
     }
 }
